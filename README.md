@@ -1,28 +1,16 @@
-# Terraform AWS EC2 Instance with Specific Private IP
+# AWS Lambda Function for CSV to JSON Conversion
 
-This Terraform configuration sets up an AWS environment including a VPC, a subnet, and an EC2 instance with a specified private IP address within the subnet.
+This repository contains Terraform configuration files to set up an AWS Lambda function that converts CSV files to JSON. The Lambda function is triggered by an S3 event notification whenever a new CSV file is uploaded to a specified S3 bucket.
 
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/downloads.html) installed.
 - AWS account with credentials configured locally (`aws configure`).
 
-## Configuration Details
+## Configuration Overview
 
-1. **VPC and Subnet**: A Virtual Private Cloud (VPC) and a subnet are created. The subnet is defined within the VPC with the CIDR block `10.0.1.0/24`.
-2. **Security Group**: A security group is created to allow inbound SSH access (port 22) from any IP address (`0.0.0.0/0`) and all outbound traffic.
-3. **Network Interface**: A network interface is created in the specified subnet with the desired private IP address (`10.0.1.10`).
-4. **EC2 Instance**: An EC2 instance is launched and the previously created network interface is attached to it.
+1. **S3 Bucket**: An S3 bucket is created to store CSV files. When a new CSV file is uploaded, it triggers the Lambda function.
+2. **IAM Role and Policies**: An IAM role with the necessary permissions is created for the Lambda function to interact with S3.
+3. **Lambda Function**: A Lambda function written in Python is provided. It reads a CSV file from the S3 bucket, converts it to JSON, and writes the JSON back to the same bucket.
+4. **S3 Bucket Notification**: The S3 bucket is configured to trigger the Lambda function on object creation events, specifically when new CSV files are uploaded.
 
-## Files
-
-- `main.tf`: Contains the main Terraform configuration.
-
-## Usage
-
-### Step 1: Initialize Terraform
-
-First, initialize the Terraform working directory, which will download the required provider and set up the environment.
-
-```sh
-terraform init
